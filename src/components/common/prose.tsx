@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
  * A paragraph block at a readable measure.
  *
  * Pages compose this instead of repeating the body type classes, which is what
- * keeps the Thai line-height rule (1.75, never leading-tight) in one place.
+ * keeps the Thai line-height rule (1.75, never a tighter value) in one place.
  */
 export function Prose({
   paragraphs,

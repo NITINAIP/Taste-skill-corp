@@ -161,7 +161,11 @@ design checks (em-dash scan, Thai leading, `h-screen`) on every PR.
 - **Thai type never uses `leading-none`, `leading-tight` or `tracking-tight`.**
   Thai stacks vowels above the line and tone marks above those, and descends
   below it. Display minimum `leading-[1.25]`, body `leading-[1.75]`. CI fails on
-  these class names.
+  these class names anywhere in `src/`, comments included, so reword a comment
+  rather than weakening the check.
+  Upstream shadcn ships `leading-none` on `Label`, `DialogTitle` and friends
+  because it was written for Latin. **Every newly vendored primitive must be
+  swept for it before it is committed.**
 - **Zero em-dashes and en-dashes** anywhere a reader can see. CI fails on this.
 - **One icon family.** Everything imports from `@/components/icons` (Phosphor,
   weight regular). No `lucide-react`, no hand-rolled SVG icon paths. The two

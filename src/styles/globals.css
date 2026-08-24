@@ -175,8 +175,8 @@
     text-wrap: balance;
   }
 
-  /* Thai display type never takes negative tracking. Latin-only strings opt in
-     explicitly with `tracking-tight` at the call site. */
+  /* Thai display type never takes negative letter spacing. Latin-only strings
+     opt in explicitly at the call site. */
   ::selection {
     background-color: var(--primary);
     color: var(--primary-foreground);
