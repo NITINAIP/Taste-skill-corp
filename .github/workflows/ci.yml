@@ -27,28 +27,55 @@ jobs:
 
       - run: npm run build
 
-      - name: Design pre-flight - no em-dash may reach the page
-        # Section 9.G of the taste-skill: the em-dash and en-dash are banned
-        # outright in anything a reader can see. This is the mechanical check.
+      # The design pre-flight checks below are the parts of the taste-skill's
+      # section 14 matrix that can be made mechanical. They scan source rather
+      # than the built output, and they skip comment lines: explaining in a
+      # comment why a rule exists is good practice, and the first version of
+      # these checks punished exactly that. A class string never begins a line
+      # with * or //, so skipping those lines costs no coverage.
+      - name: Design pre-flight
         run: |
-          if grep -rn '—\|–' src/ ; then
-            echo "::error::Found an em-dash or en-dash in src/. See docs/DESIGN-BRIEF.md section 8."
-            exit 1
-          fi
-          echo "clean"
+          set -u
 
-      - name: Design pre-flight - Thai display type keeps its vowel space
-        run: |
-          if grep -rn 'leading-none\|leading-tight\|tracking-tight' src/ ; then
-            echo "::error::Thai stacks vowels and tone marks above the line. See docs/DESIGN-BRIEF.md section 4."
-            exit 1
-          fi
-          echo "clean"
+          # $4 is an optional path the rule deliberately exempts.
+          scan () {
+            local label=$1 pattern=$2 reason=$3 exempt=${4:-}
+            local hits
+            hits=$(grep -rnE "$pattern" src/ \
+              | awk -F: '{ body=$0; sub(/^[^:]*:[0-9]*:/, "", body); if (body !~ /^[[:space:]]*(\*|\/\/|\/\*)/) print }' \
+              || true)
+            if [ -n "$exempt" ]; then
+              hits=$(printf '%s' "$hits" | grep -v "^$exempt:" || true)
+            fi
+            if [ -n "$hits" ]; then
+              echo "::error::$label. $reason"
+              echo "$hits"
+              return 1
+            fi
+            echo "ok: $label"
+          }
 
-      - name: Design pre-flight - viewport stability
-        run: |
-          if grep -rn 'h-screen' src/ ; then
-            echo "::error::Use min-h-[100dvh]; h-screen jumps on iOS Safari."
-            exit 1
-          fi
-          echo "clean"
+          failed=0
+
+          scan "no em-dash or en-dash may reach the page" \
+               '—|–' \
+               'Section 9.G of the taste-skill bans both outright. Use a hyphen or restructure the sentence.' || failed=1
+
+          scan "Thai display type keeps its vowel space" \
+               'leading-none|leading-tight|tracking-tight' \
+               'Thai stacks vowels above the line and tone marks above those. Display minimum leading-[1.25], body leading-[1.75]. See docs/DESIGN-BRIEF.md section 4.' || failed=1
+
+          scan "viewport stability" \
+               'h-screen' \
+               'Use min-h-[100dvh]; h-screen jumps when the iOS Safari address bar collapses.' || failed=1
+
+          scan "one icon family" \
+               '@phosphor-icons/react"|from "lucide-react"' \
+               'Icons come from @/components/icons only. See CLAUDE.md section 6.' || failed=1
+
+          scan "axios is the only transport" \
+               'axios\.create|new XMLHttpRequest|[^.[:alnum:]]fetch\(' \
+               'Only src/api/client.ts may construct a transport. See CLAUDE.md section 2.' \
+               'src/api/client.ts' || failed=1
+
+          exit $failed

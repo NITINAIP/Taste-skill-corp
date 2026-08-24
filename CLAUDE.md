@@ -146,8 +146,10 @@ GitHub Pages. Two details that are easy to lose:
 - `dist/404.html` is a copy of `index.html`. GitHub Pages has no rewrite rules,
   so without it a hard refresh on `/products/motor` returns a real 404.
 
-`.github/workflows/ci.yml` runs lint, typecheck, build, and three mechanical
-design checks (em-dash scan, Thai leading, `h-screen`) on every PR.
+`.github/workflows/ci.yml` runs lint, typecheck, build, and five mechanical
+checks on every PR: the em-dash scan, Thai line-height class names, `h-screen`,
+one icon family, and axios as the only transport. They scan source and skip
+comment lines.
 
 ---
 
@@ -161,8 +163,8 @@ design checks (em-dash scan, Thai leading, `h-screen`) on every PR.
 - **Thai type never uses `leading-none`, `leading-tight` or `tracking-tight`.**
   Thai stacks vowels above the line and tone marks above those, and descends
   below it. Display minimum `leading-[1.25]`, body `leading-[1.75]`. CI fails on
-  these class names anywhere in `src/`, comments included, so reword a comment
-  rather than weakening the check.
+  these class names in `src/` (comment lines are skipped, so explaining the rule
+  in a comment is fine).
   Upstream shadcn ships `leading-none` on `Label`, `DialogTitle` and friends
   because it was written for Latin. **Every newly vendored primitive must be
   swept for it before it is committed.**
