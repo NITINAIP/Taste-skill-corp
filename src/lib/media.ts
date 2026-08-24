@@ -9,7 +9,7 @@ import { mediaSlots } from "@/content/media"
  * text-only is not an option either: the taste-skill calls a text-only marketing
  * page incomplete work, and div-based fake imagery is banned outright.
  *
- * So: `NEXT_PUBLIC_IMAGE_MODE=remote` gives seeded picsum photography on any
+ * So: `VITE_IMAGE_MODE=remote` gives seeded picsum photography on any
  * machine with internet, and the default `placeholder` mode serves the committed
  * SVG compositions in /public/media that `scripts/generate-placeholders.mjs`
  * generates from the same seeds. Neither mode pretends to be something it is not.
@@ -17,7 +17,7 @@ import { mediaSlots } from "@/content/media"
  * Real photography still to shoot is listed in docs/ASSETS-NEEDED.md.
  */
 export const imageMode: "remote" | "placeholder" =
-  process.env.NEXT_PUBLIC_IMAGE_MODE === "remote" ? "remote" : "placeholder"
+  import.meta.env.VITE_IMAGE_MODE === "remote" ? "remote" : "placeholder"
 
 const BASE_WIDTH = 1600
 
@@ -25,7 +25,6 @@ export type Photo = {
   src: string
   width: number
   height: number
-  unoptimized: boolean
   /** Art direction for the real photograph that replaces this slot. */
   brief: string
 }
@@ -47,10 +46,9 @@ export function photo(id: string): Photo {
     src:
       imageMode === "remote"
         ? `https://picsum.photos/seed/${slot.seed}/${width}/${height}`
-        : `/media/${slot.seed}.svg`,
+        : `${import.meta.env.BASE_URL}media/${slot.seed}.svg`,
     width,
     height,
-    unoptimized: imageMode === "placeholder",
     brief: slot.brief,
   }
 }

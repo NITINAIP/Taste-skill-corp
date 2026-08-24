@@ -14,6 +14,17 @@ brief. Section 14 of the skill (FINAL PRE-FLIGHT CHECK) is the definition of don
 > trust-first Thai financial-services language, leaning toward shadcn/ui on
 > Tailwind v4 with a navy + amber token set and restrained, motivated motion.
 
+**Stack:** React 19 + Vite + TypeScript, react-router, Tailwind v4, vendored
+shadcn/ui, Motion for animation, axios for every network call. Shipped as a
+static SPA to GitHub Pages. There is no server at runtime, which is why the api
+layer reads generated JSON and the two write endpoints are served by an axios
+mock adapter until `VITE_API_BASE_URL` points somewhere real.
+
+**Architecture rules set by the project owner** (full detail in `CLAUDE.md`
+section 2): styling lives in components not in pages, business logic lives in
+custom hooks not in UI, data fetching is axios only through
+component -> hook -> service -> client, and one component per file.
+
 Three audiences, in priority order:
 
 1. **ผู้ซื้อประกัน (retail)** - lands from search or an ad, wants to know what is covered
@@ -298,6 +309,12 @@ scoring bar with a filled track (skill bans those).
 `/agent/apply` is a form page, not a marketing page: single column, max-w-2xl,
 label above input, helper text present, error below input, no placeholder-as-label.
 
+### Section files
+
+Each page owns `src/pages/<route>/sections/*.tsx`, one file per section, and the
+page file composes them in order. A page file that contains layout markup instead
+of composed sections is the thing the owner's first architecture rule forbids.
+
 ### `/contact` - header, branch cards, form, hours strip.
 
 ---
@@ -312,9 +329,10 @@ banned outright.
 
 The resolution is a two-mode media layer:
 
-- `src/lib/media.ts` exposes `photo(slot)`. `NEXT_PUBLIC_IMAGE_MODE=remote`
+- `src/lib/media.ts` exposes `photo(slot)`. `VITE_IMAGE_MODE=remote`
   returns a `picsum.photos` seeded URL; the default `placeholder` returns a local
-  seeded SVG from `/public/media/`.
+  seeded SVG from `/public/media/`. Components never call it directly; they use
+  `<AppImage slot="..." alt="..." />`.
 - `scripts/generate-placeholders.mjs` emits those SVGs: deterministic geometric
   compositions in the brand palette, correct aspect ratio per slot. They read as
   art direction, not as grey boxes, and they are honest - none of them pretends

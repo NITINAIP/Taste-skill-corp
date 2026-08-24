@@ -27,3 +27,7 @@ Content rules, non-negotiable:
 
 Export typed records, not loose strings, so page agents cannot restructure your copy:
 `export const products: Product[]`, `export const timeline: Milestone[]`, and so on.
+
+`scripts/build-api.mjs` turns these modules into `public/api/*.json`, which the axios
+layer reads. Keep every export JSON-serialisable: plain objects, arrays, strings,
+numbers and booleans. No functions, no Dates, no undefined.

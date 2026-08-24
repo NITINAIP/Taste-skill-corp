@@ -1,4 +1,4 @@
-"use client"
+import { Toaster as Sonner, type ToasterProps } from "sonner"
 
 import {
   CircleCheckIcon,
@@ -7,15 +7,18 @@ import {
   OctagonXIcon,
   TriangleAlertIcon,
 } from "@/components/icons"
-import { useTheme } from "next-themes"
-import { Toaster as Sonner, type ToasterProps } from "sonner"
+import { useTheme } from "@/hooks/use-theme"
 
+/**
+ * Vendored from shadcn/ui. The theme source is this project's own ThemeProvider
+ * rather than next-themes, which was dropped with Next.
+ */
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme()
+  const { resolvedTheme } = useTheme()
 
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
+      theme={resolvedTheme}
       className="toaster group"
       icons={{
         success: <CircleCheckIcon className="size-4" />,

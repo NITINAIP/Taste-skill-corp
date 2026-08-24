@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches-ignore: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      - run: npm run typecheck
+
+      - run: npm run build
+
+      - name: Design pre-flight - no em-dash may reach the page
+        # Section 9.G of the taste-skill: the em-dash and en-dash are banned
+        # outright in anything a reader can see. This is the mechanical check.
+        run: |
+          if grep -rn '—\|–' src/ ; then
+            echo "::error::Found an em-dash or en-dash in src/. See docs/DESIGN-BRIEF.md section 8."
+            exit 1
+          fi
+          echo "clean"
+
+      - name: Design pre-flight - Thai display type keeps its vowel space
+        run: |
+          if grep -rn 'leading-none\|leading-tight\|tracking-tight' src/ ; then
+            echo "::error::Thai stacks vowels and tone marks above the line. See docs/DESIGN-BRIEF.md section 4."
+            exit 1
+          fi
+          echo "clean"
+
+      - name: Design pre-flight - viewport stability
+        run: |
+          if grep -rn 'h-screen' src/ ; then
+            echo "::error::Use min-h-[100dvh]; h-screen jumps on iOS Safari."
+            exit 1
+          fi
+          echo "clean"

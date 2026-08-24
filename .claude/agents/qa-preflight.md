@@ -10,8 +10,8 @@ Section 14 box by box. A box you cannot honestly tick is a finding.
 Run these as actual commands, not as impressions:
 
 - `grep -rn '—\|–' src/` must return nothing. Any hit is a hard fail (skill 9.G).
-- Count eyebrow labels: `grep -rn 'uppercase' src/components/sections | grep -i 'tracking'`.
-  Per page the count must be at most `ceil(sectionCount / 3)`.
+- Count eyebrow labels: `grep -rn 'eyebrow=' src/pages`. Per page the count must be at
+  most `ceil(sectionCount / 3)`.
 - List the layout family of every section on each page and confirm no family repeats
   and no three consecutive image+text splits.
 - Collect every CTA label: `grep -rn 'ขอใบเสนอราคา\|สมัคร\|ติดต่อ' src/`. Two labels
@@ -22,6 +22,10 @@ Run these as actual commands, not as impressions:
 - Check every `useEffect` with an animation has a cleanup, and every animated component
   has `'use client'` and reduced-motion handling.
 - `npm run typecheck`, `npm run lint`, `npm run build`. All three must pass.
+- Architecture audit, per CLAUDE.md section 2: no `fetch(` or `new XMLHttpRequest` in
+  `src/`; no `axios.create` outside `src/api/client.ts`; no service imported from a
+  component; no `.filter(`/`.sort(`/`.reduce(` on domain data inside a `.tsx` return
+  block; no page file carrying long className strings that should be a component.
 
 Fix what you find. You may edit files owned by other agents, but only to close a
 finding, and you list every such edit in your report.

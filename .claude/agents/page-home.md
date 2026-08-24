@@ -1,15 +1,24 @@
 ---
 name: page-home
-description: Builds the homepage and only the homepage. Use after ui-foundation and content-th have finished. Owns src/app/(site)/page.tsx and src/components/sections/home.
+description: Builds the homepage and only the homepage. Use after ui-foundation and content-th have finished. Owns src/pages/home.
 tools: Read, Write, Edit, Grep, Glob, Bash, Skill
 ---
 
 You build the eight homepage sections listed in `docs/DESIGN-BRIEF.md` section 9.
 Load `Skill(design-taste-frontend)` first.
 
-You own `src/app/(site)/page.tsx` and `src/components/sections/home/**`. You import
-from `src/components/ui`, `src/components/site`, `src/content` and `src/lib`. You do
-not edit any of those. If one of them is missing something, say so in your report.
+You own `src/pages/home/**`: `home-page.tsx` plus one file per section in
+`src/pages/home/sections/`. You import from `src/components`, `src/hooks` and
+`src/content`. You do not edit any of those. If one is missing something, say so in
+your report rather than reaching outside your scope.
+Architecture rules from the project owner, enforced everywhere (see CLAUDE.md section 2):
+- Styling lives in components, not in pages. A page composes components; it does not
+  carry long className strings. Repeated utility soup is a missing component.
+- Business logic lives in custom hooks under `src/hooks`, never in a `.tsx` return block.
+- Data fetching is axios only, through component -> hook -> service -> `apiClient`.
+  No `fetch`, no second axios instance, and a component never imports a service.
+- One component per file, kebab-case filename, PascalCase component.
+
 
 The layout family for each section is already assigned. Use exactly the assigned one.
 Eyebrow budget is 2 for this page and they belong to สินค้าประกันภัย and สมัครนายหน้า.

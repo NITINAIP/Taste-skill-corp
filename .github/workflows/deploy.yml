@@ -1,0 +1,72 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Required by actions/deploy-pages. `contents: read` stays read-only: the
+# workflow publishes an artifact, it never pushes to the repository.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time. Queued runs wait rather than cancelling, so a
+# half-published site is never left live.
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Regenerate placeholder media
+        run: npm run media
+
+      - name: Build
+        # GitHub Pages serves a project site from /<repo>/, so the router
+        # basename and every asset URL need that prefix.
+        env:
+          VITE_BASE_PATH: /${{ github.event.repository.name }}/
+        run: npm run build
+
+      - name: Add SPA fallback
+        # Pages has no rewrite rules, so a deep link such as /products/motor
+        # would 404 on a hard refresh. Serving index.html as the 404 document
+        # hands the URL to the client router instead.
+        run: cp dist/index.html dist/404.html
+
+      - name: Disable Jekyll processing
+        run: touch dist/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

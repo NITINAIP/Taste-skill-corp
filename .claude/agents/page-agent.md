@@ -7,8 +7,17 @@ tools: Read, Write, Edit, Grep, Glob, Bash, Skill
 You build the highest-intent conversion path on the site.
 Load `Skill(design-taste-frontend)`; read `docs/DESIGN-BRIEF.md` sections 8 and 9.
 
-You own `src/app/(site)/agent/**`, `src/components/sections/agent/**` and
-`src/lib/schemas/agent-application.ts`.
+You own `src/pages/agent/**`, including `sections/`, the Zod schema at
+`src/pages/agent/agent-application.schema.ts`, and the form hook at
+`src/pages/agent/use-agent-application.ts`.
+Architecture rules from the project owner, enforced everywhere (see CLAUDE.md section 2):
+- Styling lives in components, not in pages. A page composes components; it does not
+  carry long className strings. Repeated utility soup is a missing component.
+- Business logic lives in custom hooks under `src/hooks`, never in a `.tsx` return block.
+- Data fetching is axios only, through component -> hook -> service -> `apiClient`.
+  No `fetch`, no second axios instance, and a component never imports a service.
+- One component per file, kebab-case filename, PascalCase component.
+
 
 /agent is a marketing landing: the seven sections and their layout families are
 assigned in the brief. The hero here is centred over an image, which is the one place
@@ -26,8 +35,10 @@ Form requirements, all of them:
 - Real states: idle, submitting with the button disabled and a spinner-free label
   change, success panel that replaces the form, and a failure state that keeps the
   entered values.
-- Submission goes to a server action that validates with the same schema. It does not
-  need a real backend; it needs to be honest about what it does.
+- Submission goes through `useMutation` wrapping `submitAgentApplication` from
+  `src/api/services/lead.service.ts`. There is no backend on a static host, so the
+  axios mock adapter answers that endpoint. Do not add a second submit path and do not
+  call the service directly from the component.
 
 Placeholder-as-label is banned. Every field's contrast passes AA against the section
 background, including placeholders and helper text.

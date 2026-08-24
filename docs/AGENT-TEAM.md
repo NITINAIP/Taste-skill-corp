@@ -52,12 +52,12 @@
 | Agent | หน้าที่ | เป็นเจ้าของไฟล์ | อ่านได้ (ห้ามแก้) |
 |---|---|---|---|
 | **design-director** | อ่าน brief ของลูกค้า ตั้ง design read + dials + token + layout-family map ตัดสินข้อขัดแย้งเรื่องดีไซน์ ไม่เขียนโค้ดหน้าเว็บ | `docs/DESIGN-BRIEF.md`, `docs/ASSETS-NEEDED.md` | ทั้ง repo |
-| **ui-foundation** | Next+Tailwind v4 config, design token ใน `globals.css`, ฟอนต์, vendor shadcn/ui + เปลี่ยนไอคอนเป็น Phosphor, media layer, nav, footer, primitives ที่ใช้ร่วม | `src/app/layout.tsx`, `src/app/globals.css`, `src/components/ui/**`, `src/components/site/**`, `src/lib/**`, `next.config.ts`, `scripts/**` | `docs/**` |
+| **ui-foundation** | Vite+Tailwind v4 config, design token ใน `styles/globals.css`, ฟอนต์, vendor shadcn/ui + เปลี่ยนไอคอนเป็น Phosphor, media layer, axios client, hook กลาง, nav, footer, primitives ที่ใช้ร่วม | `src/main.tsx`, `src/App.tsx`, `src/routes.tsx`, `src/styles/**`, `src/components/ui/**`, `src/components/common/**`, `src/components/layout/**`, `src/providers/**`, `src/api/**`, `src/hooks/**`, `src/lib/**`, `vite.config.ts`, `scripts/**`, `.github/**` | `docs/**` |
 | **content-th** | ข้อมูลและ copy ภาษาไทยทั้งหมด ความคุ้มครองจริงของประกันแต่ละประเภท ค่าคอมมิชชั่น FAQ ชื่อคนจริง ๆ ไม่ใช่ placeholder | `src/content/**` | `docs/**`, `src/lib/**` |
-| **page-home** | 8 section ของหน้าแรกตาม layout-family map | `src/app/(site)/page.tsx`, `src/components/sections/home/**` | `src/components/ui/**`, `src/content/**` |
-| **page-corporate** | ประวัติบริษัท + ติดต่อเรา | `src/app/(site)/about/**`, `src/app/(site)/contact/**`, `src/components/sections/corporate/**` | เหมือนกัน |
-| **page-products** | index + รายละเอียดสินค้าประกันภัยรายตัว ตารางความคุ้มครอง ตารางเทียบชั้น 1/2+/3+/3 | `src/app/(site)/products/**`, `src/components/sections/products/**` | เหมือนกัน |
-| **page-agent** | หน้าสมัครนายหน้า + ฟอร์มสมัคร RHF/Zod พร้อม state ครบ | `src/app/(site)/agent/**`, `src/components/sections/agent/**`, `src/lib/schemas/agent-application.ts` | เหมือนกัน |
+| **page-home** | 8 section ของหน้าแรกตาม layout-family map | `src/pages/home/**` | `src/components/**`, `src/hooks/**`, `src/content/**` |
+| **page-corporate** | ประวัติบริษัท + ติดต่อเรา | `src/pages/about/**`, `src/pages/contact/**` | เหมือนกัน |
+| **page-products** | index + รายละเอียดสินค้าประกันภัยรายตัว ตารางความคุ้มครอง ตารางเทียบชั้น 1/2+/3+/3 | `src/pages/products/**` | เหมือนกัน |
+| **page-agent** | หน้าสมัครนายหน้า + ฟอร์มสมัคร RHF/Zod พร้อม state ครบ | `src/pages/agent/**` | เหมือนกัน |
 | **qa-preflight** | รัน pre-flight §14 แบบกลไก (นับ eyebrow, grep em-dash, ตรวจ layout family ซ้ำ, ตรวจ CTA ซ้ำ intent, contrast), `npm run build`, `typecheck`, `lint`, ตรวจ responsive แก้ที่พบได้เลย | แก้ได้ทุกไฟล์ เฉพาะเพื่อปิด finding | - |
 
 ---
@@ -71,7 +71,10 @@
 3. **ห้ามติดตั้ง dependency เอง** ถ้าขาด ให้รายงาน `ui-foundation` เป็นคนติดตั้ง
    (skill 3.F: ตรวจ `package.json` ก่อน import ทุกครั้ง)
 4. **ห้ามส่งงานที่มี `—` หรือ `–`** โผล่ในข้อความที่ผู้ใช้เห็น เช็คด้วย
-   `grep -rn '—\|–' src/` ก่อนบอกว่าเสร็จ
+   `grep -rn '—\|–' src/` ก่อนบอกว่าเสร็จ CI จะ fail ถ้ามี
+4b. **สามกฎสถาปัตยกรรมของเจ้าของโปรเจกต์** อยู่ใน `CLAUDE.md` ข้อ 2
+   สไตล์อยู่ใน component ไม่ใช่ page, business logic อยู่ใน custom hook ไม่ใช่ UI,
+   fetch ผ่าน axios เท่านั้นและต้องผ่านชั้น component -> hook -> service -> client
 5. **ห้าม `// TODO` หรือ `...` แทนโค้ดจริง** (skill `full-output-enforcement`)
    section ที่สร้างต้อง render ได้จริงทั้งหมด
 6. **จบงานต้องรัน `npm run typecheck`** และรายงานผลตามจริง ถ้าพังต้องบอก
