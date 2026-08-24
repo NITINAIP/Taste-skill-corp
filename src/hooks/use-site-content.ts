@@ -12,7 +12,7 @@ import type { Testimonial } from "@/content/testimonials"
 
 export function useHomeContent() {
   const resource = useAsyncResource<HomeContent>(
-    (signal) => fetchHomeContent(signal),
+    () => fetchHomeContent(),
     "home"
   )
   return { ...resource, content: resource.data }
@@ -20,7 +20,7 @@ export function useHomeContent() {
 
 export function useAboutContent() {
   const resource = useAsyncResource<AboutContent>(
-    (signal) => fetchAboutContent(signal),
+    () => fetchAboutContent(),
     "about"
   )
   return { ...resource, content: resource.data }
@@ -28,7 +28,7 @@ export function useAboutContent() {
 
 export function useAgentContent() {
   const resource = useAsyncResource<AgentContent>(
-    (signal) => fetchAgentContent(signal),
+    () => fetchAgentContent(),
     "agent"
   )
   return { ...resource, content: resource.data }
@@ -36,7 +36,7 @@ export function useAgentContent() {
 
 export function useTestimonials() {
   const resource = useAsyncResource<Testimonial[]>(
-    (signal) => fetchTestimonials(signal),
+    () => fetchTestimonials(),
     "testimonials"
   )
   return { ...resource, testimonials: resource.data ?? [] }

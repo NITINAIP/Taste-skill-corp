@@ -1,19 +1,26 @@
 import { apiClient } from "@/api/client"
 import { endpoints } from "@/api/endpoints"
+import { cachedGet } from "@/api/request-cache"
 import type { Branch, Company } from "@/content/company"
 import type { Partner } from "@/content/partners"
 
-export async function fetchCompany(signal?: AbortSignal): Promise<Company> {
-  const { data } = await apiClient.get<Company>(endpoints.company, { signal })
-  return data
+export function fetchCompany(): Promise<Company> {
+  return cachedGet(endpoints.company, async () => {
+    const { data } = await apiClient.get<Company>(endpoints.company)
+    return data
+  })
 }
 
-export async function fetchBranches(signal?: AbortSignal): Promise<Branch[]> {
-  const { data } = await apiClient.get<Branch[]>(endpoints.branches, { signal })
-  return data
+export function fetchBranches(): Promise<Branch[]> {
+  return cachedGet(endpoints.branches, async () => {
+    const { data } = await apiClient.get<Branch[]>(endpoints.branches)
+    return data
+  })
 }
 
-export async function fetchPartners(signal?: AbortSignal): Promise<Partner[]> {
-  const { data } = await apiClient.get<Partner[]>(endpoints.partners, { signal })
-  return data
+export function fetchPartners(): Promise<Partner[]> {
+  return cachedGet(endpoints.partners, async () => {
+    const { data } = await apiClient.get<Partner[]>(endpoints.partners)
+    return data
+  })
 }

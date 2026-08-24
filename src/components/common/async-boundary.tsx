@@ -22,6 +22,7 @@ export function AsyncBoundary({
   skeleton,
   emptyTitle = "ยังไม่มีข้อมูลในส่วนนี้",
   emptyDetail,
+  onDark = false,
   children,
 }: {
   isLoading: boolean
@@ -31,23 +32,52 @@ export function AsyncBoundary({
   skeleton?: ReactNode
   emptyTitle?: string
   emptyDetail?: string
+  /**
+   * Set inside a navy band (`<Section surface="primary">`). Without it a failed
+   * fetch renders a light card in the middle of a dark section, which reads as a
+   * broken page rather than as an error message.
+   */
+  onDark?: boolean
   children: ReactNode
 }) {
   if (error) {
     return (
       <div
         role="alert"
-        className="rounded-lg border border-border bg-card p-8 text-center"
+        className={cn(
+          "rounded-lg border p-8 text-center",
+          onDark ? "border-white/15 bg-white/8" : "border-border bg-card"
+        )}
       >
-        <Warning className="mx-auto size-8 text-muted-foreground" />
-        <p className="mt-4 font-display text-lg leading-[1.4] font-semibold">
+        <Warning
+          className={cn(
+            "mx-auto size-8",
+            onDark ? "text-white/70" : "text-muted-foreground"
+          )}
+        />
+        <p
+          className={cn(
+            "mt-4 font-display text-lg leading-[1.4] font-semibold",
+            onDark && "text-white"
+          )}
+        >
           โหลดข้อมูลไม่สำเร็จ
         </p>
-        <p className="mx-auto mt-2 max-w-md text-sm leading-[1.75] text-muted-foreground">
+        <p
+          className={cn(
+            "mx-auto mt-2 max-w-md text-sm leading-[1.75]",
+            onDark ? "text-white/75" : "text-muted-foreground"
+          )}
+        >
           {error.message}
         </p>
         {onRetry ? (
-          <Button variant="outline" size="sm" className="mt-5" onClick={onRetry}>
+          <Button
+            variant={onDark ? "onDark" : "outline"}
+            size="sm"
+            className="mt-5"
+            onClick={onRetry}
+          >
             ลองใหม่อีกครั้ง
           </Button>
         ) : null}
@@ -61,12 +91,27 @@ export function AsyncBoundary({
 
   if (isEmpty) {
     return (
-      <div className="rounded-lg border border-dashed border-border bg-card p-10 text-center">
-        <p className="font-display text-lg leading-[1.4] font-semibold">
+      <div
+        className={cn(
+          "rounded-lg border border-dashed p-10 text-center",
+          onDark ? "border-white/20 bg-white/6" : "border-border bg-card"
+        )}
+      >
+        <p
+          className={cn(
+            "font-display text-lg leading-[1.4] font-semibold",
+            onDark && "text-white"
+          )}
+        >
           {emptyTitle}
         </p>
         {emptyDetail ? (
-          <p className="mx-auto mt-2 max-w-md text-sm leading-[1.75] text-muted-foreground">
+          <p
+            className={cn(
+              "mx-auto mt-2 max-w-md text-sm leading-[1.75]",
+              onDark ? "text-white/75" : "text-muted-foreground"
+            )}
+          >
             {emptyDetail}
           </p>
         ) : null}

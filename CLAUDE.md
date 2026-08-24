@@ -33,6 +33,7 @@ src/
     api-error.ts           ApiError + Thai user-facing messages
     endpoints.ts           every path in one object
     mock-adapter.ts        axios adapter serving the two write endpoints locally
+    request-cache.ts       dedupes GET reads shared by more than one hook
     services/              one file per domain, returns domain objects
 
   hooks/                   BUSINESS LOGIC. No JSX in this folder.
@@ -113,6 +114,21 @@ Both exist on purpose and the boundary is:
 `scripts/build-api.mjs` generates `public/api/*.json` from `src/content`, so both
 paths have one source of truth. Point `VITE_API_BASE_URL` at a real service and
 the api layer stops using those files, with no change in `src/api` or `src/hooks`.
+
+**Section copy vs domain data.** Headings, leads and CTA band copy that describe a
+page's structure are written in the section component. `src/content` holds the
+domain records: products, coverage, history, commission, testimonials. The test is
+whether the string would still be true if the site were rebuilt with a different
+layout. If yes it is content; if it only exists because this section exists, it
+belongs to the section.
+
+**Read deduplication.** Two hooks often need the same resource: a product detail
+page resolves its slug from the catalogue, and the related-products row below it
+reads the same catalogue. `request-cache.ts` shares the in-flight promise so that
+is one request, not two. A cached read ignores any single caller's AbortSignal,
+because the response belongs to everyone waiting on it; `useAsyncResource` still
+discards a result that arrives after its own caller is gone. A rejected request is
+evicted immediately, so a retry button performs a real retry.
 
 ---
 

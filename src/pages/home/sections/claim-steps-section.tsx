@@ -16,20 +16,17 @@ import { cn } from "@/lib/utils"
  * The verb from the content file is the label. Nothing here prints a step
  * number, because the reading order already carries the sequence. The connector
  * runs horizontally between markers at desktop and vertically on mobile, and it
- * is hidden on the last item through a last-child variant rather than an index
+ * is hidden on the last item through a group-last variant rather than an index
  * comparison in the markup.
  */
 const stepIcons: ElementType[] = [ChatCircleText, FileText, Clock, HandCoins]
 
 const flowClassName = "mt-12 grid gap-10 md:grid-cols-4 md:gap-8"
 
-const itemClassName = cn(
-  "relative flex gap-4 md:block",
-  "[&:last-child_[data-connector]]:hidden"
-)
+const itemClassName = "group relative flex gap-4 md:block"
 
 const connectorClassName = cn(
-  "absolute left-6 top-14 -bottom-10 w-px bg-border",
+  "absolute left-6 top-14 -bottom-10 w-px bg-border group-last:hidden",
   "md:left-14 md:-right-8 md:top-6 md:bottom-auto md:h-px md:w-auto"
 )
 
@@ -39,7 +36,7 @@ const markerClassName =
 function ClaimStepItem({ step, icon: Icon }: { step: ClaimStep; icon: ElementType }) {
   return (
     <li className={itemClassName}>
-      <span aria-hidden="true" data-connector className={connectorClassName} />
+      <span aria-hidden="true" className={connectorClassName} />
       <span aria-hidden="true" className={markerClassName}>
         <Icon className="size-6" />
       </span>

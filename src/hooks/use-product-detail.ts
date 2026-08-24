@@ -9,7 +9,7 @@ const MOTOR_SLUGS = new Set(["motor"])
 
 export function useProductDetail(slug: string | undefined) {
   const resource = useAsyncResource<Product>(
-    (signal) => fetchProductBySlug(slug ?? "", signal),
+    () => fetchProductBySlug(slug ?? ""),
     `product:${slug ?? ""}`
   )
 
@@ -26,8 +26,7 @@ export function useMotorTiers(enabled: boolean) {
     tiers: MotorTier[]
     matrix: MotorCoverageRow[]
   }>(
-    async (signal) =>
-      enabled ? fetchMotorTiers(signal) : { tiers: [], matrix: [] },
+    async () => (enabled ? fetchMotorTiers() : { tiers: [], matrix: [] }),
     `motor-tiers:${enabled}`
   )
 

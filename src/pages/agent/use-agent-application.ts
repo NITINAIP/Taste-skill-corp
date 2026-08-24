@@ -46,6 +46,20 @@ function toPayload(values: AgentApplicationForm): AgentApplicationPayload {
   }
 }
 
+/**
+ * เวลาที่ระบบรับเรื่อง แปลงเป็นรูปแบบวันที่ไทยครั้งเดียวที่นี่
+ * คอมโพเนนต์แสดงผลอย่างเดียว ไม่คำนวณหรือจัดรูปแบบข้อมูลเอง
+ */
+export function formatReceivedAt(isoDate: string): string {
+  const parsed = new Date(isoDate)
+  if (Number.isNaN(parsed.getTime())) return isoDate
+
+  return new Intl.DateTimeFormat("th-TH", {
+    dateStyle: "long",
+    timeStyle: "short",
+  }).format(parsed)
+}
+
 export function useAgentApplication() {
   const form = useForm<AgentApplicationForm>({
     resolver: zodResolver(agentApplicationSchema),
@@ -79,3 +93,5 @@ export function useAgentApplication() {
     receipt: mutation.data,
   }
 }
+
+export type AgentApplication = ReturnType<typeof useAgentApplication>

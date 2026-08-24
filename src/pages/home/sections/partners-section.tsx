@@ -39,7 +39,7 @@ export function PartnersSection() {
   return (
     <Section surface="muted" className="py-12 md:py-16">
       <p className="max-w-[62ch] text-sm leading-[1.75] text-muted-foreground">
-        บริษัทประกันวินาศภัยที่เราเป็นนายหน้าให้ และเทียบเงื่อนไขให้คุณในการขอใบเสนอราคาครั้งเดียว
+        บริษัทประกันวินาศภัยที่เราเป็นนายหน้าให้ เทียบเบี้ยและเงื่อนไขจากหลายบริษัทได้ในคราวเดียว
       </p>
 
       <AsyncBoundary

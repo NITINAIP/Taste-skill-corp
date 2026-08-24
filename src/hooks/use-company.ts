@@ -9,7 +9,7 @@ import type { Partner } from "@/content/partners"
 
 export function useCompany() {
   const resource = useAsyncResource<Company>(
-    (signal) => fetchCompany(signal),
+    () => fetchCompany(),
     "company"
   )
   return { ...resource, company: resource.data }
@@ -17,7 +17,7 @@ export function useCompany() {
 
 export function useBranches() {
   const resource = useAsyncResource<Branch[]>(
-    (signal) => fetchBranches(signal),
+    () => fetchBranches(),
     "branches"
   )
   return { ...resource, branches: resource.data ?? [] }
@@ -25,7 +25,7 @@ export function useBranches() {
 
 export function usePartners() {
   const resource = useAsyncResource<Partner[]>(
-    (signal) => fetchPartners(signal),
+    () => fetchPartners(),
     "partners"
   )
   return { ...resource, partners: resource.data ?? [] }

@@ -1,6 +1,7 @@
 import { apiClient } from "@/api/client"
 import { ApiError, messageForKind } from "@/api/api-error"
 import { endpoints } from "@/api/endpoints"
+import { cachedGet } from "@/api/request-cache"
 import type { Product } from "@/content/products"
 import type { MotorCoverageRow, MotorTier } from "@/content/motor-tiers"
 
@@ -11,16 +12,15 @@ import type { MotorCoverageRow, MotorTier } from "@/content/motor-tiers"
  * component state, no formatting for display. Hooks handle state; components
  * handle presentation.
  */
-export async function fetchProducts(signal?: AbortSignal): Promise<Product[]> {
-  const { data } = await apiClient.get<Product[]>(endpoints.products, { signal })
-  return data
+export function fetchProducts(): Promise<Product[]> {
+  return cachedGet(endpoints.products, async () => {
+    const { data } = await apiClient.get<Product[]>(endpoints.products)
+    return data
+  })
 }
 
-export async function fetchProductBySlug(
-  slug: string,
-  signal?: AbortSignal
-): Promise<Product> {
-  const products = await fetchProducts(signal)
+export async function fetchProductBySlug(slug: string): Promise<Product> {
+  const products = await fetchProducts()
   const product = products.find((item) => item.slug === slug)
 
   if (!product) {
@@ -30,13 +30,15 @@ export async function fetchProductBySlug(
   return product
 }
 
-export async function fetchMotorTiers(signal?: AbortSignal): Promise<{
+export function fetchMotorTiers(): Promise<{
   tiers: MotorTier[]
   matrix: MotorCoverageRow[]
 }> {
-  const { data } = await apiClient.get<{
-    tiers: MotorTier[]
-    matrix: MotorCoverageRow[]
-  }>(endpoints.motorTiers, { signal })
-  return data
+  return cachedGet(endpoints.motorTiers, async () => {
+    const { data } = await apiClient.get<{
+      tiers: MotorTier[]
+      matrix: MotorCoverageRow[]
+    }>(endpoints.motorTiers)
+    return data
+  })
 }

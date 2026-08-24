@@ -14,8 +14,9 @@ import { quoteCta, recruitCta } from "@/lib/nav"
  * Layout family: asymmetric split, copy on seven columns, photograph on five.
  *
  * The hero holds three text elements and nothing else: headline, subtext, CTA
- * pair. The header is 72px, so the band is sized against the remaining viewport
- * rather than against `h-screen`, which collapses on mobile Safari.
+ * pair. The header is 72px, so the band is sized against the remaining dynamic
+ * viewport height, which is what keeps it stable when mobile Safari moves its
+ * address bar.
  */
 function HeroCopySkeleton() {
   return (

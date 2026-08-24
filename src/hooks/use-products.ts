@@ -13,7 +13,7 @@ export type CategoryFilter = ProductCategory | "all"
  */
 export function useProducts() {
   const resource = useAsyncResource<Product[]>(
-    (signal) => fetchProducts(signal),
+    () => fetchProducts(),
     "products"
   )
   const [category, setCategory] = useState<CategoryFilter>("all")
@@ -56,7 +56,7 @@ export function useProducts() {
 
 export function useFeaturedProducts(slugs: string[]) {
   const resource = useAsyncResource<Product[]>(
-    (signal) => fetchProducts(signal),
+    () => fetchProducts(),
     "products"
   )
 

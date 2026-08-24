@@ -1,5 +1,6 @@
 import { apiClient } from "@/api/client"
 import { endpoints } from "@/api/endpoints"
+import { cachedGet } from "@/api/request-cache"
 import type { ClaimStep, Stat } from "@/content/home"
 import type { Governance, Leader, Milestone } from "@/content/about"
 import type {
@@ -35,32 +36,30 @@ export type AgentContent = {
   faqs: { q: string; a: string }[]
 }
 
-export async function fetchHomeContent(
-  signal?: AbortSignal
-): Promise<HomeContent> {
-  const { data } = await apiClient.get<HomeContent>(endpoints.home, { signal })
-  return data
-}
-
-export async function fetchAboutContent(
-  signal?: AbortSignal
-): Promise<AboutContent> {
-  const { data } = await apiClient.get<AboutContent>(endpoints.about, { signal })
-  return data
-}
-
-export async function fetchAgentContent(
-  signal?: AbortSignal
-): Promise<AgentContent> {
-  const { data } = await apiClient.get<AgentContent>(endpoints.agent, { signal })
-  return data
-}
-
-export async function fetchTestimonials(
-  signal?: AbortSignal
-): Promise<Testimonial[]> {
-  const { data } = await apiClient.get<Testimonial[]>(endpoints.testimonials, {
-    signal,
+export function fetchHomeContent(): Promise<HomeContent> {
+  return cachedGet(endpoints.home, async () => {
+    const { data } = await apiClient.get<HomeContent>(endpoints.home)
+    return data
   })
-  return data
+}
+
+export function fetchAboutContent(): Promise<AboutContent> {
+  return cachedGet(endpoints.about, async () => {
+    const { data } = await apiClient.get<AboutContent>(endpoints.about)
+    return data
+  })
+}
+
+export function fetchAgentContent(): Promise<AgentContent> {
+  return cachedGet(endpoints.agent, async () => {
+    const { data } = await apiClient.get<AgentContent>(endpoints.agent)
+    return data
+  })
+}
+
+export function fetchTestimonials(): Promise<Testimonial[]> {
+  return cachedGet(endpoints.testimonials, async () => {
+    const { data } = await apiClient.get<Testimonial[]>(endpoints.testimonials)
+    return data
+  })
 }
