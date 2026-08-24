@@ -1,26 +1,209 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ---------------------------------------------------------------------------
+   Design tokens. See docs/DESIGN-BRIEF.md section 3.
+
+   Two colour families and nothing else: navy does the structural work, amber is
+   the single brand accent. `--accent` keeps shadcn's own meaning (a subtle hover
+   surface); the brand amber lives on `--brand` so that vendored primitives do not
+   accidentally turn a select-item hover into a CTA.
+
+   Every token is defined here in the light block. The dark block only redefines
+   values, so no colour has its sole definition inside a conditional.
+--------------------------------------------------------------------------- */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --radius: 0.75rem;
+
+  --background: #f6f8fb;
+  --foreground: #0e1b2c;
+
+  --card: #ffffff;
+  --card-foreground: #0e1b2c;
+  --popover: #ffffff;
+  --popover-foreground: #0e1b2c;
+
+  --primary: #0f2a4a;
+  --primary-foreground: #ffffff;
+  --primary-hover: #163a63;
+
+  --secondary: #e7edf5;
+  --secondary-foreground: #0f2a4a;
+
+  --muted: #edf1f7;
+  --muted-foreground: #55677e;
+
+  --accent: #e7edf5;
+  --accent-foreground: #0f2a4a;
+
+  --brand: #e8940c;
+  --brand-foreground: #0b1727;
+  --brand-hover: #ce7f06;
+  --brand-soft: #fdf3e2;
+
+  --destructive: #b3261e;
+  --destructive-foreground: #ffffff;
+
+  --border: #dde4ee;
+  --input: #d3dce8;
+  --ring: #1d4b80;
+
+  --shadow-card: 0 1px 2px rgb(14 27 44 / 0.05), 0 10px 28px -18px rgb(14 27 44 / 0.22);
+  --shadow-btn: 0 1px 2px rgb(14 27 44 / 0.08);
+  --shadow-lift: 0 2px 4px rgb(14 27 44 / 0.06), 0 18px 40px -24px rgb(14 27 44 / 0.3);
+}
+
+.dark {
+  --background: #081524;
+  --foreground: #e7edf5;
+
+  --card: #0f2036;
+  --card-foreground: #e7edf5;
+  --popover: #10233b;
+  --popover-foreground: #e7edf5;
+
+  --primary: #5b9be0;
+  --primary-foreground: #06111d;
+  --primary-hover: #79aee8;
+
+  --secondary: #16283f;
+  --secondary-foreground: #e7edf5;
+
+  --muted: #142338;
+  --muted-foreground: #9fb2c9;
+
+  --accent: #17283e;
+  --accent-foreground: #e7edf5;
+
+  --brand: #f4a927;
+  --brand-foreground: #0b1727;
+  --brand-hover: #f7bb53;
+  --brand-soft: #1d2b3d;
+
+  --destructive: #f2b8b5;
+  --destructive-foreground: #601410;
+
+  --border: #22364f;
+  --input: #2a3f5a;
+  --ring: #5b9be0;
+
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.35), 0 12px 32px -20px rgb(0 0 0 / 0.7);
+  --shadow-btn: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.4), 0 20px 44px -26px rgb(0 0 0 / 0.8);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-soft: var(--brand-soft);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --shadow-card: var(--shadow-card);
+  --shadow-btn: var(--shadow-btn);
+  --shadow-lift: var(--shadow-lift);
+
+  --font-display: var(--font-anuphan), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-plex-thai), ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    /* Thai stacks vowels and tone marks above the line and descends below it.
+       Anything tighter than this clips them. See DESIGN-BRIEF section 4. */
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    line-height: 1.25;
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  /* Thai display type never takes negative tracking. Latin-only strings opt in
+     explicitly with `tracking-tight` at the call site. */
+  ::selection {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* The page container. Every section uses this so the left edge never drifts. */
+  .container-page {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 80rem;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .container-page {
+      padding-inline: 2rem;
+    }
+  }
+
+  .text-body {
+    line-height: 1.75;
+    color: var(--muted-foreground);
+    max-width: 62ch;
+  }
 }

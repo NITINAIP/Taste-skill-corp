@@ -85,8 +85,8 @@ appears only on primary action and on the one number per section that matters.
 | `--muted-foreground` | `#5A6B80` | secondary text. Passes AA on both `--background` and `--card`. |
 | `--primary` | `#0F2A4A` | navy 900. Solid buttons, dark bands, headings. |
 | `--primary-foreground` | `#FFFFFF` | 13.8:1 on primary |
-| `--accent` | `#E8940C` | amber 500. Primary CTA fill only. |
-| `--accent-foreground` | `#0B1727` | 7.0:1 on accent |
+| `--brand` | `#E8940C` | amber 500. Primary CTA fill only. `--accent` is left with shadcn's own meaning, a subtle hover surface, so vendored primitives do not turn a menu hover into a CTA. |
+| `--brand-foreground` | `#0B1727` | 7.0:1 on brand |
 | `--border` | `#DFE5EE` | hairlines |
 | `--ring` | `#1D4B80` | focus ring, 3px offset 2px |
 
@@ -98,9 +98,9 @@ appears only on primary action and on the one number per section that matters.
 | `--card` | `#0F2036` |
 | `--foreground` | `#E7EDF5` |
 | `--muted-foreground` | `#9BADC4` |
-| `--primary` | `#F4A927` (amber 400 becomes the solid in dark, navy has nothing to sit on) |
-| `--primary-foreground` | `#0B1727` |
-| `--accent` | `#F4A927` |
+| `--primary` | `#5B9BE0` (navy has nothing to sit on in dark, so the solid lightens; `--primary-foreground` goes dark) |
+| `--primary-foreground` | `#06111D` |
+| `--brand` | `#F4A927` |
 | `--border` | `rgba(231,237,245,0.12)` |
 
 ### Hard colour rules
