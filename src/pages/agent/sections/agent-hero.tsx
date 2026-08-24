@@ -62,7 +62,7 @@ export function AgentHero({ resource }: { resource: AgentContentResource }) {
                 title={content.hero.headline}
                 lead={content.hero.sub}
                 onDark
-                className="text-center"
+                className="max-w-none text-center"
               />
               <Button variant="brand" size="lg" className="mt-8" asChild>
                 <Link to={routePaths.agentApply}>{recruitCta.label}</Link>

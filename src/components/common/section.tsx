@@ -8,7 +8,12 @@ const surfaceClass: Record<Surface, string> = {
   muted: "bg-muted text-foreground",
   // A navy band inside a light page is part of the system, not a theme flip.
   // It keeps the same accent and the same radius scale.
-  primary: "bg-primary text-primary-foreground dark:bg-card",
+  //
+  // Dark mode swaps both halves together. Carrying only `dark:bg-card` over left
+  // `--primary-foreground` in place, which in dark is near-black navy sitting on
+  // a dark card: invisible for any child that does not set its own colour.
+  primary:
+    "bg-primary text-primary-foreground dark:bg-card dark:text-card-foreground",
 }
 
 export function Section({

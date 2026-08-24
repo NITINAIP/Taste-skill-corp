@@ -22,16 +22,17 @@ export function GovernanceSection({ about }: { about: AboutResource }) {
         <SectionHeading
           eyebrow="ข้อมูลตามกฎหมาย"
           title="ใบอนุญาตและการกำกับดูแล"
-          lead="บริษัทประกอบธุรกิจนายหน้าประกันวินาศภัยภายใต้ใบอนุญาตที่ออกโดยสำนักงาน คปภ. ข้อมูลด้านล่างตรงกับหนังสือรับรองบริษัทและใบอนุญาตที่ถือครองอยู่"
+          lead="บริษัทประกอบธุรกิจนายหน้าประกันวินาศภัยภายใต้ใบอนุญาตที่ออกโดยสำนักงาน คปภ. รายละเอียดการจดทะเบียนด้านล่างใช้ตรวจสอบสถานะใบอนุญาตกับสำนักงาน คปภ. ได้ก่อนทำสัญญา"
         />
       </Reveal>
-      <AsyncBoundary
-        isLoading={about.isLoading}
-        error={about.error}
-        onRetry={about.refetch}
-        skeleton={<LinesSkeleton lines={6} />}
-      >
-        <dl className="mt-10 grid gap-x-14 sm:grid-cols-2">
+      <div className="mt-10">
+        <AsyncBoundary
+          isLoading={about.isLoading}
+          error={about.error}
+          onRetry={about.refetch}
+          skeleton={<LinesSkeleton lines={6} />}
+        >
+          <dl className="grid gap-x-14 sm:grid-cols-2">
           {records.map((record) => (
             <div key={record.label} className="border-t border-border py-6">
               <dt className="text-sm leading-[1.7] text-muted-foreground">
@@ -42,8 +43,9 @@ export function GovernanceSection({ about }: { about: AboutResource }) {
               </dd>
             </div>
           ))}
-        </dl>
-      </AsyncBoundary>
+          </dl>
+        </AsyncBoundary>
+      </div>
     </Section>
   )
 }

@@ -1,11 +1,12 @@
 import { AppImage } from "@/components/common/app-image"
-import { AsyncBoundary, CardGridSkeleton } from "@/components/common/async-boundary"
+import { AsyncBoundary } from "@/components/common/async-boundary"
 import { Reveal, RevealGroup } from "@/components/common/reveal"
 import { Section } from "@/components/common/section"
 import { SectionHeading } from "@/components/common/section-heading"
 import type { Leader } from "@/content/about"
 
 import type { AboutResource } from "@/pages/about/about-resource"
+import { LeaderGridSkeleton } from "@/pages/about/leader-grid-skeleton"
 
 /**
  * Section 6: portrait grid.
@@ -25,18 +26,20 @@ export function LeadershipSection({ about }: { about: AboutResource }) {
           lead="ผู้รับผิดชอบงานรับประกันภัย งานปฏิบัติการ งานสินไหมทดแทน และงานพัฒนาช่องทางนายหน้า"
         />
       </Reveal>
-      <AsyncBoundary
-        isLoading={about.isLoading}
-        error={about.error}
-        onRetry={about.refetch}
-        skeleton={<CardGridSkeleton count={4} className="mt-12 lg:grid-cols-4" />}
-      >
-        <RevealGroup className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {leaders.map((leader) => (
-            <LeaderProfile key={leader.name} leader={leader} />
-          ))}
-        </RevealGroup>
-      </AsyncBoundary>
+      <div className="mt-12">
+        <AsyncBoundary
+          isLoading={about.isLoading}
+          error={about.error}
+          onRetry={about.refetch}
+          skeleton={<LeaderGridSkeleton />}
+        >
+          <RevealGroup className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {leaders.map((leader) => (
+              <LeaderProfile key={leader.name} leader={leader} />
+            ))}
+          </RevealGroup>
+        </AsyncBoundary>
+      </div>
     </Section>
   )
 }

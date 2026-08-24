@@ -1,1 +1,0 @@
-import{r as e}from"./index-Pj7QvtYg.js";import{n as t,r as n,t as r}from"./use-page-meta-BDeyNPef.js";var i=e();function a(){return r({title:`รายละเอียดความคุ้มครอง`,description:`ความคุ้มครอง ข้อยกเว้น และเอกสารที่ต้องใช้`}),(0,i.jsx)(n,{children:(0,i.jsx)(t,{as:`h1`,title:`รายละเอียดความคุ้มครอง`,lead:`ความคุ้มครอง ข้อยกเว้น และเอกสารที่ต้องใช้`})})}export{a as default};

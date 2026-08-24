@@ -73,13 +73,21 @@ export const contactPreferenceOptions: readonly string[] = [
   "อีเมล",
 ]
 
+/** ค่าที่ยอมรับได้ของคำถามเรื่องใบอนุญาต เก็บเป็นข้อความเพราะปุ่มตัวเลือกส่งค่าเป็นข้อความ */
+export const licenceValues: readonly string[] = ["no", "yes"]
+
 export const licenceOptions: readonly { value: string; label: string }[] = [
   { value: "no", label: "ยังไม่มีใบอนุญาต" },
   { value: "yes", label: "มีใบอนุญาตนายหน้าแล้ว" },
 ]
 
+/**
+ * ตรวจว่าค่าที่ส่งมาอยู่ในรายการตัวเลือกจริง
+ * ปล่อยค่าว่างผ่าน เพราะกรณีไม่ได้เลือกมีข้อความของตัวเองอยู่แล้ว
+ * ผู้กรอกจะได้เห็นข้อความเดียวต่อหนึ่งปัญหา ไม่ใช่สองข้อความซ้อนกัน
+ */
 const chosenFrom = (options: readonly string[]) => (value: string) =>
-  options.includes(value)
+  value === "" || options.includes(value)
 
 export const agentApplicationSchema = z
   .object({
@@ -87,7 +95,9 @@ export const agentApplicationSchema = z
       .string()
       .trim()
       .min(1, "กรุณากรอกชื่อและนามสกุล")
-      .min(4, "กรุณากรอกทั้งชื่อและนามสกุลตามบัตรประชาชน")
+      .refine((value) => value === "" || value.length >= 4, {
+        error: "กรุณากรอกทั้งชื่อและนามสกุลตามบัตรประชาชน",
+      })
       .max(120, "ชื่อยาวเกินไป กรุณาตรวจสอบอีกครั้ง"),
 
     nationalId: z.string().superRefine((value, ctx) => {
@@ -195,7 +205,7 @@ export const agentApplicationSchema = z
     hasLicence: z
       .string()
       .min(1, "กรุณาเลือกสถานะใบอนุญาตของคุณ")
-      .refine((value) => value === "yes" || value === "no", {
+      .refine(chosenFrom(licenceValues), {
         error: "กรุณาเลือกสถานะใบอนุญาตของคุณ",
       }),
 

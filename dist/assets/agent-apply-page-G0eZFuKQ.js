@@ -1,1 +1,0 @@
-import{r as e}from"./index-Pj7QvtYg.js";import{n as t,r as n,t as r}from"./use-page-meta-BDeyNPef.js";var i=e();function a(){return r({title:`กรอกใบสมัครนายหน้า`,description:`กรอกข้อมูลเพื่อให้ทีมรับสมัครติดต่อกลับ`}),(0,i.jsx)(n,{children:(0,i.jsx)(t,{as:`h1`,title:`กรอกใบสมัครนายหน้า`,lead:`กรอกข้อมูลเพื่อให้ทีมรับสมัครติดต่อกลับ`})})}export{a as default};

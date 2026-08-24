@@ -21,7 +21,7 @@ export function AgentCtaSection() {
           <SectionHeading
             onDark
             title="สนใจทำงานเป็นนายหน้าประกันวินาศภัย"
-            lead="เรารับสมัครนายหน้าทั้งแบบเต็มเวลาและแบบเสริมรายได้ มีการอบรม ติวสอบใบอนุญาต และระบบเทียบเบี้ยให้ใช้ออกใบเสนอราคาเอง"
+            lead="เรามีการอบรม การติวสอบใบอนุญาต และระบบเทียบเบี้ยให้นายหน้าในเครือข่ายใช้ออกใบเสนอราคาให้ลูกค้าได้เอง"
           />
           <Button asChild variant="brand" size="lg" className="shrink-0">
             <Link to={recruitCta.href}>{recruitCta.label}</Link>

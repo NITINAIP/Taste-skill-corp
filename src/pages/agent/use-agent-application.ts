@@ -1,5 +1,5 @@
 import { useCallback } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import {
@@ -71,7 +71,10 @@ export function useAgentApplication() {
     (values, signal) => submitAgentApplication(toPayload(values), signal)
   )
 
-  const { handleSubmit, getValues } = form
+  const { control, handleSubmit, getValues } = form
+
+  // ใช้ useWatch แทน form.watch เพื่อให้คอมโพเนนต์ที่อ่านค่านี้รีเรนเดอร์เฉพาะเมื่อค่านี้เปลี่ยน
+  const licenceAnswer = useWatch({ control, name: "hasLicence" })
 
   const submit = handleSubmit((values) => {
     void mutation.submit(values)
@@ -86,7 +89,7 @@ export function useAgentApplication() {
     form,
     submit,
     retry,
-    requiresLicenceNumber: form.watch("hasLicence") === "yes",
+    requiresLicenceNumber: licenceAnswer === "yes",
     isSubmitting: mutation.isSubmitting,
     isSubmitted: mutation.status === "success",
     error: mutation.error,

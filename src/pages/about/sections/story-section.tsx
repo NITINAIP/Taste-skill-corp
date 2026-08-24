@@ -18,15 +18,19 @@ export function StorySection({ about }: { about: AboutResource }) {
     <Section>
       <div className="grid gap-10 lg:grid-cols-12 lg:items-start lg:gap-16">
         <div className="lg:col-span-7">
-          <SectionHeading title="เรื่องราวของเรา" />
-          <AsyncBoundary
-            isLoading={about.isLoading}
-            error={about.error}
-            onRetry={about.refetch}
-            skeleton={<LinesSkeleton lines={9} />}
-          >
-            <Prose className="mt-6" paragraphs={about.content?.story ?? []} />
-          </AsyncBoundary>
+          <Reveal>
+            <SectionHeading title="เรื่องราวของเรา" />
+          </Reveal>
+          <div className="mt-6">
+            <AsyncBoundary
+              isLoading={about.isLoading}
+              error={about.error}
+              onRetry={about.refetch}
+              skeleton={<LinesSkeleton lines={9} />}
+            >
+              <Prose paragraphs={about.content?.story ?? []} />
+            </AsyncBoundary>
+          </div>
         </div>
         <Reveal className="lg:col-span-5">
           <AppImage

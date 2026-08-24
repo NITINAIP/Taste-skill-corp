@@ -36,18 +36,20 @@ export function ContactHeaderSection() {
           lead="ติดต่อทีมงานได้โดยตรงตามช่องทางด้านล่าง หรือกรอกแบบฟอร์มไว้แล้วให้เจ้าหน้าที่ติดต่อกลับพร้อมรายละเอียดความคุ้มครองและเบี้ยประกัน"
         />
       </Reveal>
-      <AsyncBoundary
-        isLoading={isLoading}
-        error={error}
-        onRetry={refetch}
-        skeleton={<LinesSkeleton lines={3} />}
-      >
-        <ul className="mt-12 grid divide-y divide-border border-y border-border sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+      <div className="mt-12">
+        <AsyncBoundary
+          isLoading={isLoading}
+          error={error}
+          onRetry={refetch}
+          skeleton={<LinesSkeleton lines={3} />}
+        >
+          <ul className="grid divide-y divide-border border-y border-border sm:grid-cols-3 sm:divide-x sm:divide-y-0">
           {channels.map((channel) => (
             <ChannelRow key={channel.id} channel={channel} />
           ))}
-        </ul>
-      </AsyncBoundary>
+          </ul>
+        </AsyncBoundary>
+      </div>
     </Section>
   )
 }

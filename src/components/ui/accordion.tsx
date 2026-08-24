@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 import { ChevronDownIcon } from "@/components/icons"
 import { Accordion as AccordionPrimitive } from "radix-ui"

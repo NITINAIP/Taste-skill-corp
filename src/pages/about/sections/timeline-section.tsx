@@ -21,21 +21,23 @@ export function TimelineSection({ about }: { about: AboutResource }) {
       <Reveal>
         <SectionHeading
           title="เส้นทางของบริษัท"
-          lead="หกช่วงที่เปลี่ยนวิธีทำงานของเรา เรียงตามปีที่เกิดขึ้นจริง"
+          lead="ช่วงเวลาที่เปลี่ยนวิธีทำงานของเรา เรียงตามปีที่เกิดขึ้นจริง"
         />
       </Reveal>
-      <AsyncBoundary
-        isLoading={about.isLoading}
-        error={about.error}
-        onRetry={about.refetch}
-        skeleton={<LinesSkeleton lines={8} />}
-      >
-        <ol className="mt-12">
-          {milestones.map((milestone) => (
-            <MilestoneRow key={milestone.year} milestone={milestone} />
-          ))}
-        </ol>
-      </AsyncBoundary>
+      <div className="mt-12">
+        <AsyncBoundary
+          isLoading={about.isLoading}
+          error={about.error}
+          onRetry={about.refetch}
+          skeleton={<LinesSkeleton lines={8} />}
+        >
+          <ol>
+            {milestones.map((milestone) => (
+              <MilestoneRow key={milestone.year} milestone={milestone} />
+            ))}
+          </ol>
+        </AsyncBoundary>
+      </div>
     </Section>
   )
 }

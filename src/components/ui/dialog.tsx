@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 import { XIcon } from "@/components/icons"
 import { Dialog as DialogPrimitive } from "radix-ui"
