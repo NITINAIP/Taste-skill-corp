@@ -28,5 +28,11 @@ export default tseslint.config(
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
     },
+  },
+  {
+    // Vendored shadcn/ui primitives export a component plus its cva variants from
+    // one file by design. That is upstream's shape, not ours to relitigate.
+    files: ["src/components/ui/**/*.tsx"],
+    rules: { "react-refresh/only-export-components": "off" },
   }
 )

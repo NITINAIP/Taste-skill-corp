@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 2000" width="1600" height="2000" role="presentation">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0c2340"/>
+      <stop offset="1" stop-color="#081524"/>
+    </linearGradient>
+    <pattern id="grid" width="133" height="133" patternUnits="userSpaceOnUse">
+      <path d="M 133 0 L 0 0 0 133" fill="none" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>
+    </pattern>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="96.0"/>
+    </filter>
+    <clipPath id="frame"><rect width="1600" height="2000"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+    <rect width="1600" height="2000" fill="url(#g)"/>
+    <rect width="1600" height="2000" fill="url(#grid)"/>
+    <g filter="url(#soft)">
+      <circle cx="542" cy="1580" r="1155" fill="#173d69" fill-opacity="0.177"/>
+      <circle cx="780" cy="336" r="1171" fill="#173d69" fill-opacity="0.256"/>
+      <circle cx="1227" cy="737" r="757" fill="#173d69" fill-opacity="0.307"/>
+    </g>
+    <rect x="0" y="1385" width="1600" height="66" fill="#e8940c" fill-opacity="0.9"/>
+    <circle cx="334" cy="1230" r="431" fill="none" stroke="#e8940c" stroke-opacity="0.55" stroke-width="9.6"/>
+    <circle cx="1466" cy="1385" r="237" fill="none" stroke="#ffffff" stroke-opacity="0.16" stroke-width="8.0"/>
+  </g>
+</svg>

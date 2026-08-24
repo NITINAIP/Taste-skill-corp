@@ -1,25 +1,11 @@
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react"
+
 import {
-  createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react"
-
-export type Theme = "light" | "dark" | "system"
-export type ResolvedTheme = "light" | "dark"
-
-export type ThemeContextValue = {
-  theme: Theme
-  resolvedTheme: ResolvedTheme
-  setTheme: (theme: Theme) => void
-  toggleTheme: () => void
-}
-
-export const ThemeContext = createContext<ThemeContextValue | null>(null)
-
-const STORAGE_KEY = "arak-theme"
+  THEME_STORAGE_KEY as STORAGE_KEY,
+  ThemeContext,
+  type ResolvedTheme,
+  type Theme,
+} from "@/providers/theme-context"
 
 function readStoredTheme(): Theme {
   try {

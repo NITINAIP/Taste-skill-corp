@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 import { ApiError, messageForKind } from "@/api/api-error"
 
@@ -29,20 +29,33 @@ export function useMutation<TInput, TResult>(
   const [data, setData] = useState<TResult | null>(null)
 
   const mutateRef = useRef(mutate)
-  mutateRef.current = mutate
+  useEffect(() => {
+    mutateRef.current = mutate
+  })
+
+  // Aborts an in-flight submission if the form unmounts, so a late response
+  // cannot set state on a screen that is gone.
+  const controllerRef = useRef<AbortController | null>(null)
+  useEffect(() => {
+    return () => controllerRef.current?.abort()
+  }, [])
 
   const submit = useCallback(async (input: TInput): Promise<TResult | null> => {
+    controllerRef.current?.abort()
     const controller = new AbortController()
+    controllerRef.current = controller
 
     setStatus("submitting")
     setError(null)
 
     try {
       const result = await mutateRef.current(input, controller.signal)
+      if (controller.signal.aborted) return null
       setData(result)
       setStatus("success")
       return result
     } catch (cause) {
+      if (controller.signal.aborted) return null
       setError(
         cause instanceof ApiError
           ? cause

@@ -4,7 +4,7 @@ import { Section } from "@/components/common/section"
 import { SectionHeading } from "@/components/common/section-heading"
 import { Button } from "@/components/ui/button"
 import { usePageMeta } from "@/hooks/use-page-meta"
-import { routePaths } from "@/routes"
+import { routePaths } from "@/lib/routes"
 
 export default function NotFoundPage() {
   usePageMeta({

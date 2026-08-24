@@ -20,16 +20,6 @@ const AboutPage = lazy(() => import("@/pages/about/about-page"))
 const ContactPage = lazy(() => import("@/pages/contact/contact-page"))
 const NotFoundPage = lazy(() => import("@/pages/not-found-page"))
 
-export const routePaths = {
-  home: "/",
-  products: "/products",
-  productDetail: (slug: string) => `/products/${slug}`,
-  agent: "/agent",
-  agentApply: "/agent/apply",
-  about: "/about",
-  contact: "/contact",
-} as const
-
 export function AppRoutes() {
   return (
     <Routes>
