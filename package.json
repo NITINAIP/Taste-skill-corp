@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
+    "dev": "npm run api && vite",
     "build": "npm run api && tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint .",

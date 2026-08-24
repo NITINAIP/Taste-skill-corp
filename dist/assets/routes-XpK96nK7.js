@@ -1,1 +1,0 @@
-var e={home:`/`,products:`/products`,productDetail:e=>`/products/${e}`,agent:`/agent`,agentApply:`/agent/apply`,about:`/about`,contact:`/contact`};export{e as t};

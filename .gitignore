@@ -13,7 +13,10 @@
 # testing
 /coverage
 
-# next.js
+# build output
+/dist/
+
+# next.js (left over from the scaffold, this project is Vite now)
 /.next/
 /out/
 
